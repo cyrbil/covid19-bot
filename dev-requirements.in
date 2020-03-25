@@ -1,0 +1,9 @@
+bandit
+black
+bump2version
+isort
+mypy
+pre-commit
+pydocstyle
+pylint
+safety

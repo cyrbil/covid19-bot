@@ -1,0 +1,7 @@
+# Ignore all but few files
+*
+
+!Makefile
+!dev-requirements.txt
+!requirements.txt
+!app.py
