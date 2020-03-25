@@ -11,6 +11,8 @@ A bot that post updates about Covid-19 pandemic to a Slack channel.
 
 Minimal requirement is just `docker` or `Python3.8`
 
+You will also need a [`Slack` webhook url](https://api.slack.com/messaging/webhooks).
+
 ## Usage
 
 The application uses `docker` for easier deployment. You can use the

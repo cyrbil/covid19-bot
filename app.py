@@ -40,19 +40,19 @@ class Covid19:
     source_url = "https://www.worldometers.info/coronavirus/"
     payload_fields = [
         {
-            "Total Cases:            ": lambda n: f"{n[0]:d}",
-            "New Cases:            ": lambda n: f"{n[1]:+d}",
-            "Tot Cases/1M pop:": lambda n: f"{n[7]:.1f}".rstrip("0").rstrip("."),
+            "Total Cases:            ": lambda n: locale.format_string("%d", n[0], True),
+            "New Cases:            ": lambda n: locale.format_string("%+d", n[1], True),
+            "Tot Cases/1M pop:": lambda n: locale.format_string("%.1f", n[7], True).rstrip("0").rstrip("."),
         },
         {
-            "Total deaths: ": lambda n: f"{n[2]:d}",
-            "New deaths: ": lambda n: f"{n[3]:+d}",
-            "Active/Total:": lambda n: f"{n[5] / n[0]:.1f}".rstrip("0").rstrip("."),
+            "Total deaths: ": lambda n:  locale.format_string("%d", n[2], True),
+            "New deaths: ": lambda n:  locale.format_string("%+d", n[3], True),
+            "Active/Total:": lambda n:  locale.format_string("%.1f", n[5] / n[0], True).rstrip("0").rstrip("."),
         },
         {
-            "Total Recovered:": lambda n: f"+{n[4]:d}",
-            "Active Cases:     ": lambda n: f"{n[5]:d}",
-            "Serious, Critical:": lambda n: f"+{n[6]:d}",
+            "Total Recovered:": lambda n:  locale.format_string("%d", n[4], True),
+            "Active Cases:     ": lambda n:  locale.format_string("%d", n[5], True),
+            "Serious, Critical:": lambda n:  locale.format_string("%d", n[6], True),
         },
     ]
 
