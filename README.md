@@ -1,6 +1,11 @@
 # Covid-19 Bot
 
-A bot that post updates about Covid-19 pandemic to a Slack channel
+A bot that post updates about Covid-19 pandemic to a Slack channel.
+
+> Information source: https://www.worldometers.info/coronavirus/
+
+![Preview](./docs/preview.png)
+
 
 ## Requirements
 
@@ -18,6 +23,14 @@ To run the application:
     make build
     make run
     
+### Add/Remove countries
+
+Edit the `config.json` file.
+
+Key is the anchor from the worldometers's table, value is how to display in slack.
+
+
+
 ## Contribute
 
 You can install the environment, or use the `docker` environment.

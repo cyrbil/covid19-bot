@@ -56,7 +56,7 @@ FROM base
 # copy locales, dependencies and app into final image
 COPY --chown=0:0 --from=build /opt/requirements /opt/requirements
 COPY --chown=0:0 --from=build /usr/lib/locale /usr/lib/locale
-COPY --chown=0:0 app.py ./
+COPY --chown=0:0 app.py config.json ./
 
 # revoke permissions
 USER 1000:1000

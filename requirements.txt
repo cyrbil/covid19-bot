@@ -26,9 +26,6 @@ aiohttp[speedups]==3.6.2 \
     --hash=sha256:ae55bac364c405caa23a4f2d6cfecc6a0daada500274ffca4a9230e7129eac59 \
     --hash=sha256:b778ce0c909a2653741cb4b1ac7015b5c130ab9c897611df43ae6a58523cb965 \
     # via -r requirements.in
-aiologger==0.5.0 \
-    --hash=sha256:5e1493a2c9819a5d751b9e775c79b9afe628387ee80a1d5e91ff719bb2f511b9 \
-    # via -r requirements.in
 async-timeout==3.0.1 \
     --hash=sha256:0c3c816a028d47f659d6ff5c745cb2acf1f966da1fe5c19c77a70282b25f4c5f \
     --hash=sha256:4291ca197d287d274d0b6cb5d6f8f8f82d434ed288f962539ff18cc9012f9ea3 \

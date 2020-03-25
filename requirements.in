@@ -1,6 +1,5 @@
 aiofiles
 aiohttp[speedups]
-aiologger
 beautifulsoup4
 coloredlogs
 lxml

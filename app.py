@@ -9,14 +9,18 @@ Fetch latest information about covid19 progression and post it to a slack channe
 
 import os
 import sys
+import json
 import locale
 import asyncio
 import logging
+import pathlib
 import datetime
 from typing import Any, List, Text, Union, Mapping, Optional
 
 import bs4
 import aiohttp
+import aiofiles
+
 
 try:
     import coloredlogs
@@ -260,18 +264,18 @@ async def run(webhook, channel):
     if uvloop:
         uvloop.install()
 
+    current_dir = pathlib.Path(__file__).parent
+    async with aiofiles.open(current_dir.joinpath("config.json")) as config_file:
+        data = await config_file.read()
+        config = json.loads(data)
+
     locale.setlocale(locale.LC_ALL, "en_US.UTF-8")
     # pylint: disable=bad-continuation
     async with Covid19(
         slack_webhook=webhook,
         channel=channel,
         refresh_time={"hour": 23, "minute": 50, "second": 0},
-        watched_countries={
-            "Total:": "<https://www.worldometers.info/coronavirus/|:globe_with_meridians: World>",
-            "USA": "<https://www.worldometers.info/coronavirus/country/us/|:flag-us: USA>",
-            "France": "<https://www.worldometers.info/coronavirus/country/france/|:flag-fr: France>",
-            "UK": "<https://www.worldometers.info/coronavirus/country/uk/|:flag-gb: UK>",
-        },
+        watched_countries=config["watched_countries"],
     ) as covid_19:
         await covid_19.run()
 
