@@ -39,6 +39,16 @@ init:
 	            --requirement requirements.txt' \
 	&& echo -e "#!/bin/bash\nmake precommit" > "${PROJECT_ROOT}/.git/hooks/pre-commit"
 
+
+.PHONY: install
+install:
+	python3 -m pip install \
+	            --no-deps \
+	            --no-cache \
+	            --require-hashes \
+	            --requirement dev-requirements.txt \
+	            --requirement requirements.txt
+
 .PHONY: precommit
 precommit:
 	docker exec --tty "${PROJECT_NAME}_dev-tools" \
