@@ -3,6 +3,7 @@ black
 bump2version
 isort
 mypy
+pip-tools
 pre-commit
 pydocstyle
 pylint

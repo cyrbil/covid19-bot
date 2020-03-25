@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 VCS_REF ?= $(shell git describe --dirty --abbrev=10 --tags --always  2>/dev/null)
 BUILD_DATE ?= $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
 VERSION ?= 1.0.0
@@ -7,11 +9,14 @@ PROJECT_NAME ?= covid19-bot
 PROJECT_ROOT ?= $(abspath $(dir $(lastword ${MAKEFILE_LIST})))
 DOCKER_IMAGE ?= ${PROJECT_TEAM}/${PROJECT_NAME}:${VERSION}-${VCS_REF}
 
+
+.PHONY: clean
 clean:
 	docker stop "${PROJECT_NAME}_dev-tools" "${PROJECT_NAME}" || true
 	docker wait "${PROJECT_NAME}_dev-tools" "${PROJECT_NAME}" || true
 	docker rm "${PROJECT_NAME}_dev-tools" "${PROJECT_NAME}" || true
 
+.PHONY: init
 init:
 	docker run \
 	    --detach \
@@ -34,10 +39,12 @@ init:
 	            --requirement requirements.txt' \
 	&& echo -e "#!/bin/bash\nmake precommit" > "${PROJECT_ROOT}/.git/hooks/pre-commit"
 
+.PHONY: precommit
 precommit:
 	docker exec --tty "${PROJECT_NAME}_dev-tools" \
 	        python3 -m pre_commit run --all
 
+.PHONY: build
 build:
 	docker build --rm --tag "${DOCKER_IMAGE}" \
 	    --build-arg "BUILD_DATE=${BUILD_DATE}" \
@@ -45,10 +52,13 @@ build:
 	    --build-arg "VERSION=${VERSION}" \
 	    .
 
+.PHONY: run
 run:
 	docker run \
 	    --rm -ti \
 	    --name "${PROJECT_NAME}" \
+	    --env "SLACK_WEBHOOK=$${SLACK_WEBHOOK}" \
+	    --env "CHANNEL=$${CHANNEL}" \
 	    "${DOCKER_IMAGE}"
 
 lock.run%:
@@ -57,9 +67,11 @@ lock.run%:
 	            --generate-hashes \
 	            ${REQUIREMENTS_IN}
 
+.PHONY: lock
 lock: export REQUIREMENTS_IN=requirements.in
 lock: lock.run.prod
 
+.PHONY: lock.dev
 lock.dev: export REQUIREMENTS_IN=dev-requirements.in
 lock.dev: lock.run.dev
 
@@ -72,7 +84,7 @@ check.security:
 
 .PHONY: check.syntax
 check.syntax:
-	python3 -m black --diff --check --verbose app.py
+	python3 -m black --line-length=120 --diff --check --verbose app.py
 
 .PHONY: check.type
 check.type:
@@ -93,6 +105,7 @@ check.lint:
 	    --disable=missing-class-docstring \
 	    --disable=missing-module-docstring \
 	    --disable=missing-function-docstring \
+	    --max-line-length=120 \
 	    app.py
 
 .PHONY: check.requirements

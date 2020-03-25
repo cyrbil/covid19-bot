@@ -17,9 +17,10 @@ RUN addgroup --system --gid 1000 app                                          \
             --uid 1000 --gid 1000 app
 
 # setup python to use the dependencies folder"
-ENV PYTHONPATH="/opt/requirements:$PYTHONPATH"
-ENV PATH="/opt/requirements/bin:$PATH"
-ENV LD_LIBRARY_PATH="/opt/requirements:$LD_LIBRARY_PATH"
+ENV PYTHONIOENCODING="utf-8" \
+    PYTHONPATH="/opt/requirements:$PYTHONPATH" \
+    PATH="/opt/requirements/bin:$PATH" \
+    LD_LIBRARY_PATH="/opt/requirements:$LD_LIBRARY_PATH"
 
 # application options
 WORKDIR /app
@@ -30,6 +31,12 @@ ENTRYPOINT ["/usr/local/bin/python3", "/app/app.py"]
 # Stage 2 → Build dependencies
 #------------------------------------------------------------------------------
 FROM python:3.8-buster as build
+
+# install locales
+RUN apt-get update \
+ && apt-get install -y locales \
+ && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen \
+ && locale-gen
 
 # install dependencies into a custom folder
 COPY requirements.txt .
@@ -46,8 +53,9 @@ RUN python3 -m pip install                                                    \
 #------------------------------------------------------------------------------
 FROM base
 
-# copy dependencies and app into final image
+# copy locales, dependencies and app into final image
 COPY --chown=0:0 --from=build /opt/requirements /opt/requirements
+COPY --chown=0:0 --from=build /usr/lib/locale /usr/lib/locale
 COPY --chown=0:0 app.py ./
 
 # revoke permissions
