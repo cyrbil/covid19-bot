@@ -47,7 +47,7 @@ class Covid19:
         {
             "Total deaths: ": lambda n:  locale.format_string("%d", n[2], True),
             "New deaths: ": lambda n:  locale.format_string("%+d", n[3], True),
-            "Active/Total:": lambda n:  locale.format_string("%.1f", n[5] / n[0], True).rstrip("0").rstrip("."),
+            "Active/Total:": lambda n:  locale.format_string("%.1%", n[5] / n[0], True).rstrip("0").rstrip("."),
         },
         {
             "Total Recovered:": lambda n:  locale.format_string("%d", n[4], True),
