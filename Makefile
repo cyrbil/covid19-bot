@@ -2,7 +2,7 @@
 
 VCS_REF ?= $(shell git describe --dirty --abbrev=10 --tags --always  2>/dev/null)
 BUILD_DATE ?= $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
-VERSION ?= 1.0.0
+VERSION ?= 1.0.1
 
 PROJECT_TEAM ?= cyrbil
 PROJECT_NAME ?= covid19-bot

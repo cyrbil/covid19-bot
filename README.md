@@ -24,7 +24,7 @@ To run the application:
     export CHANNEL="#xxxxxx" # optional
     make build
     make run
-    
+
 ### Add/Remove countries
 
 Edit the `config.json` file.
@@ -41,13 +41,13 @@ You can install the environment, or use the `docker` environment.
 ### With `docker`:
 
     make init
-    
+
 ### With local environment:
 
 Install a `Python3.8` environment, and optionally create a `virtualenv`.
 
     make install
-    
+
 To run locally:
 
     export SLACK_WEBHOOK="https://hooks.slack.com/services/xxxxxx"
@@ -59,7 +59,7 @@ To run locally:
 You can run the various checks with:
 
     make precommit
-    
+
 Or individual check (see list in `Makefile`):
 
     make check.lint

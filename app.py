@@ -45,14 +45,16 @@ class Covid19:
             "Tot Cases/1M pop:": lambda n: locale.format_string("%.1f", n[7], True).rstrip("0").rstrip("."),
         },
         {
-            "Total deaths: ": lambda n:  locale.format_string("%d", n[2], True),
-            "New deaths: ": lambda n:  locale.format_string("%+d", n[3], True),
-            "Active/Total:": lambda n:  locale.format_string("%.1%", n[5] / n[0], True).rstrip("0").rstrip("."),
+            "Total deaths: ": lambda n: locale.format_string("%d", n[2], True),
+            "New deaths: ": lambda n: locale.format_string("%+d", n[3], True),
+            "Active/Total:": lambda n: (
+                locale.format_string("%.1f", 100 * n[5] / n[0], True).rstrip("0").rstrip(".") + "%"
+            ),
         },
         {
-            "Total Recovered:": lambda n:  locale.format_string("%d", n[4], True),
-            "Active Cases:     ": lambda n:  locale.format_string("%d", n[5], True),
-            "Serious, Critical:": lambda n:  locale.format_string("%d", n[6], True),
+            "Total Recovered:": lambda n: locale.format_string("%d", n[4], True),
+            "Active Cases:     ": lambda n: locale.format_string("%d", n[5], True),
+            "Serious, Critical:": lambda n: locale.format_string("%d", n[6], True),
         },
     ]
 
@@ -166,8 +168,12 @@ class Covid19:
                     int_value = locale.atoi(value)
                     numbers.append(int_value)
                 except ValueError:
-                    float_value = locale.atof(value)
-                    numbers.append(float_value)
+                    try:
+                        float_value = locale.atof(value)
+                        numbers.append(float_value)
+                    except ValueError:
+                        self.logger.warning("Unable to parse value %s", value)
+                        continue
             self.logger.debug("%s - %s", country, numbers)
             stats[country] = dict(zip(headers[1:], numbers))
 
