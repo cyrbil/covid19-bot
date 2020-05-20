@@ -157,9 +157,10 @@ class Covid19:
             if tr_tag.parent.name == "thead":
                 continue
             all_tr = tr_tag.find_all("td")
-            country = "".join(all_tr[0].stripped_strings)
+            country = "".join(all_tr[1].stripped_strings)
             numbers: List[Union[int, float]] = []
-            for td_tag in all_tr[1:]:
+            self.logger.debug("all_tr: %s", all_tr) 
+            for td_tag in all_tr[2:-1]:
                 value = "".join(td_tag.stripped_strings) or "0"
                 # sometime, counter is negative, but has a + sign ...
                 if value.startswith("+-"):
@@ -175,7 +176,7 @@ class Covid19:
                         self.logger.warning("Unable to parse value %s", value)
                         continue
             self.logger.debug("%s - %s", country, numbers)
-            stats[country] = dict(zip(headers[1:], numbers))
+            stats[country] = dict(zip(headers[2:], numbers))
 
         return stats
 
@@ -200,6 +201,7 @@ class Covid19:
         return payload
 
     def create_countries_payload(self, info: Mapping, payload: Mapping):
+        self.logger.debug("Countries: %s", list(info.keys()))
         for country, intro in self.watched_countries.items():
             data = info[country]
             numbers = list(data.values())
